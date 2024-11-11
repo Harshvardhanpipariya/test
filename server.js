@@ -1,28 +1,25 @@
-// Import the http module to create an HTTP server
-const http = require("http");
+// Import the Express module
+const express = require("express");
+const app = express();
 
-// Define the hostname and port
-const hostname = "127.0.0.1";
-const port = 3000;
+// Get the port from the environment variable or use 3000 as a fallback
+const port = process.env.PORT || 3000;
 
-// Create the HTTP server and define request handling
-const server = http.createServer((req, res) => {
-  // Set response headers
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
+// Define routes
+app.get("/", (req, res) => {
+  res.send("Hello, welcome to the simple Express.js server!");
+});
 
-  // Handle different routes
-  if (req.url === "/") {
-    res.end("Hello, welcome to the simple Node.js server!");
-  } else if (req.url === "/about") {
-    res.end("This is a simple Node.js backend example.");
-  } else {
-    res.statusCode = 404;
-    res.end("Page not found");
-  }
+app.get("/about", (req, res) => {
+  res.send("This is a simple Express.js backend example.");
+});
+
+// Handle undefined routes (404)
+app.use((req, res) => {
+  res.status(404).send("Page not found");
 });
 
 // Start the server
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
